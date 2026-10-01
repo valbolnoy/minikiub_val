@@ -35,22 +35,22 @@ spec:
       labels:
         app: minio
     spec:
+      securityContext:
+        fsGroup: 1001
       containers:
         - name: minio
-          image: minio/minio:RELEASE.2022-10-29T06-21-33Z
-          args:
-            - server
-            - /storage
+          image: bitnamilegacy/minio:latest
+          imagePullPolicy: IfNotPresent
           env:
-            - name: MINIO_ACCESS_KEY
+            - name: MINIO_ROOT_USER
               value: mykey
-            - name: MINIO_SECRET_KEY
+            - name: MINIO_ROOT_PASSWORD
               value: mysecret
           ports:
             - containerPort: 9000
           volumeMounts:
             - name: storage
-              mountPath: /storage
+              mountPath: /bitnami/minio/data
       volumes:
         - name: storage
           persistentVolumeClaim:
